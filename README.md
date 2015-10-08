@@ -7,4 +7,4 @@ For N-sclale its possible to use regular pin header at IO1, IO2 (max 3A).
 For HO scale i recommend screw terminal to handle more current.
 
 #Note
-A second board with a MCU is needed to translate from uart to other protocols.
+Another board with a MCU is needed to translate from uart to other protocols.
