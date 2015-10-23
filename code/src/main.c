@@ -7,11 +7,23 @@
 /*********************************************************************
    Last committed:     2015-10-07
    Last changed by:    Mikael Sundin
-   Last changed date:  2015-10-07
+   Last changed date:  2015-10-23
    ID:                 main.c
+   TODO:               Clean-up and split into different files.
 
 **********************************************************************/
 #include "stm32f0xx_conf.h"
+#include <stdint.h>
+#include <stdbool.h>
+#include "uart.h"
+#include "array_fn.h"
+
+#define SOFTWARE_NAME       "DCC Block detector"
+#define SOFTWARE_VERSION    "1.0"
+
+
+//hard-coded threshold for now, seems to work good and detect over 5mA.
+#define DETECTOR_THRESHOLD  4
 
 //number of ADC channels
 #define ADC_COUNT           8
@@ -19,8 +31,15 @@
 //number of samples to collect from every channel
 #define ADC_NBR_OF_SAMPLES   8
 
+//private functions
+static void init_hal(void);
+static void nvic_init(void);
+static void init_dcc_pin(void);
+static void init_adc(void);
 
+const char *build_str = "#" SOFTWARE_NAME " Version: " SOFTWARE_VERSION " " __DATE__ " " __TIME__;
 volatile uint16_t adc_data[ADC_COUNT*ADC_NBR_OF_SAMPLES];
+
 
 void init_adc(void)
 {
@@ -48,10 +67,8 @@ void init_adc(void)
     DMA_InitStructure.DMA_M2M = DMA_M2M_Disable;
     DMA_Init(DMA1_Channel1, &DMA_InitStructure);
     DMA_Cmd(DMA1_Channel1, ENABLE);
-    DMA_ITConfig(DMA1_Channel1, DMA_IT_TC, ENABLE); //transfer complete interrupt
 
     ADC_DMARequestModeConfig(ADC1, ADC_DMAMode_Circular);
-
 
     /* Configure the ADC1 in continous mode withe a resolutuion equal to 12 bits  */
     ADC_InitStructure.ADC_Resolution = ADC_Resolution_12b;
@@ -78,11 +95,11 @@ void init_adc(void)
     ADC_DMACmd(ADC1, ENABLE);
 }
 
-void init_dcc_pin(){
+void init_dcc_pin(void){
     GPIO_InitTypeDef GPIO_InitStructure;
     EXTI_InitTypeDef EXTI_InitStructure;
 
-    //PB1
+    //PB1 used to sync to dcc signal.
     GPIO_StructInit(&GPIO_InitStructure);
     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_1;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
@@ -99,7 +116,7 @@ void init_dcc_pin(){
     SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOB, EXTI_PinSource1);
 }
 
-//start a conversion on trigger
+//start a conversion on DCC trigger
 void EXTI0_1_IRQHandler(void){
     if(EXTI_GetITStatus(EXTI_Line1) != RESET){
         EXTI_ClearITPendingBit(EXTI_Line1);
@@ -107,74 +124,8 @@ void EXTI0_1_IRQHandler(void){
     }
 }
 
-void DMA1_Channel1_IRQHandler(void){
-  if (DMA_GetITStatus(DMA1_IT_TC1)){
-    DMA_ClearITPendingBit(DMA1_IT_TC1);
-
-  }
-
-}
-
-/**
- * Try to read one byte from usart
- * @return non zero on receive
- */
-char read_usart(){
-    if(USART_GetFlagStatus(USART1, USART_FLAG_RXNE) == SET){
-        return USART_ReceiveData(USART1);
-    }else{
-        return 0;
-    }
-
-
-
-}
-
-void write_usart(char ch){
-    while (USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET){};
-    USART_SendData(USART1, ch);
-}
-
-void writeline_usart(char* msg){
-    while(*msg != 0){
-        write_usart(*msg++);
-    }
-    write_usart('\n');
-}
-
-void init_usart(){
-    GPIO_InitTypeDef GPIO_InitStructure;
-    USART_InitTypeDef USART_InitStructure;
-
-    USART_InitStructure.USART_BaudRate = 9600;
-    USART_InitStructure.USART_WordLength = USART_WordLength_8b;
-    USART_InitStructure.USART_StopBits = USART_StopBits_1;
-    USART_InitStructure.USART_Parity = USART_Parity_No;
-    USART_InitStructure.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-    USART_InitStructure.USART_Mode = USART_Mode_Rx | USART_Mode_Tx;
-
-    USART_Init (USART1, &USART_InitStructure);
-    USART_Cmd (USART1, ENABLE);
-
-    //configure alternative function for PA9, PA10 to UART1
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource9, GPIO_AF_1);
-    GPIO_PinAFConfig(GPIOA, GPIO_PinSource10, GPIO_AF_1);
-
-    //TX pin
-    GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9 | GPIO_Pin_10;
-    GPIO_InitStructure.GPIO_Speed  = GPIO_Speed_2MHz;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF;
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-    GPIO_Init(GPIOA, &GPIO_InitStructure);
-}
-
-void nvic_init(){
+void nvic_init(void){
     NVIC_InitTypeDef NVIC_InitStructure;
-
-    NVIC_InitStructure.NVIC_IRQChannel = DMA1_Channel1_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPriority = 0x01; //0-3
-    NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-    NVIC_Init(&NVIC_InitStructure);
 
     NVIC_InitStructure.NVIC_IRQChannel = EXTI0_1_IRQn;
     NVIC_InitStructure.NVIC_IRQChannelPriority = 0x01; //0-3
@@ -183,8 +134,7 @@ void nvic_init(){
 }
 
 
-void init_hal(){
-    //enable clocking of peripherals
+void init_hal(void){
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG | RCC_APB2Periph_USART1 | RCC_APB2Periph_ADC1, ENABLE);
     RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1 | RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOB, ENABLE);
 
@@ -193,60 +143,63 @@ void init_hal(){
     init_usart();
 }
 
-uint16_t get_array_min(uint16_t *bfr, uint8_t offset, uint8_t count){
-    uint16_t val = UINT16_MAX;
 
-    while(count--){
-        val = *bfr <= val ? *bfr : val;
-        bfr += offset;
+
+volatile bool update_flag=false;
+
+void SysTick_Handler(void)  {
+    static uint32_t cnt=0;
+
+    if(cnt++ >= 250){
+        cnt = 0;
+        update_flag = true;
     }
-
-    return val;
 }
 
-uint16_t get_array_max(uint16_t *bfr, uint8_t offset, uint8_t count){
-    uint16_t val = 0;
-
-    while(count--){
-        val = *bfr >= val ? *bfr : val;
-        bfr += offset;
-    }
-
-    return val;
-}
-
-uint16_t adc_min[ADC_COUNT];
-uint16_t adc_max[ADC_COUNT];
-int32_t adc_diff[ADC_COUNT];
-
+//seems that we need ~5mA to detect anything on the track
 int main(void)
 {
-    int32_t diff;
     int i;
-    char ch;
+    uint8_t current_state=0;
+    uint8_t last_state=0;
+    int32_t tmp_diff;
+    uint16_t adc_min[ADC_COUNT];
+    uint16_t adc_max[ADC_COUNT];
+    int32_t adc_diff[ADC_COUNT];
 
     SystemInit();
     nvic_init();
     init_hal();
+    SysTick_Config(SystemCoreClock / 1000); //1ms interrupt
 
-    writeline_usart("Online\n");
+    //print software version
+    print_ln((char*)build_str);
 
     while(1)
     {
+        current_state = 0;
         for(i=0;i<ADC_COUNT;i++){
-            adc_min[i] = get_array_min((uint16_t*)&adc_data[i], ADC_COUNT, ADC_NBR_OF_SAMPLES);
-            adc_max[i] = get_array_max((uint16_t*)&adc_data[i], ADC_COUNT, ADC_NBR_OF_SAMPLES);
+            adc_min[i] = get_array16_min((uint16_t*)&adc_data[i], ADC_COUNT, ADC_NBR_OF_SAMPLES);
+            adc_max[i] = get_array16_max((uint16_t*)&adc_data[i], ADC_COUNT, ADC_NBR_OF_SAMPLES);
 
-            //lowpass iir filter
-            diff = (adc_max[i] - adc_min[i]);
-            adc_diff[i] = (adc_diff[i]*31 + diff)/32;
+            //lowpass iir filter on difference.
+            tmp_diff = (adc_max[i] - adc_min[i]);
+            adc_diff[i] = (adc_diff[i]*31 + tmp_diff)/32;
+
+            //convert array to bitmask
+            if(adc_diff[i] >= DETECTOR_THRESHOLD){
+                current_state |= 1<<i;
+            }
+
         }
 
-        ch = read_usart();
-        if(ch>0){
-            write_usart(ch);
+        //periodically check current state
+        if(update_flag){
+            update_flag = 0;
+            if(current_state != last_state){
+                last_state = current_state;
+                print_hex_ln(current_state);
+            }
         }
-
-        //TODO:calculate if we got a train on the track and output to uart
     }
 }

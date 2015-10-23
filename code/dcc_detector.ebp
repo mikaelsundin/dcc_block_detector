@@ -11,6 +11,7 @@
 				<Option output="bin\Debug\dcc_detector.elf" />
 				<Option object_output="obj\Debug\" />
 				<Option type="0" />
+				<Option create_hex="1" />
 				<Option compiler="armgcc_eb" />
 				<Option projectDeviceOptionsRelation="0" />
 				<Compiler>
@@ -71,6 +72,7 @@
 			<Add option="-eb_lib=n" />
 			<Add option="-Wl,--gc-sections" />
 		</Linker>
+		<Unit filename="README.txt" />
 		<Unit filename="SPL\inc\stm32f0xx_adc.h" />
 		<Unit filename="SPL\inc\stm32f0xx_can.h" />
 		<Unit filename="SPL\inc\stm32f0xx_cec.h" />
@@ -168,21 +170,25 @@
 		<Unit filename="cmsis\core_cm0.h" />
 		<Unit filename="cmsis\core_cmFunc.h" />
 		<Unit filename="cmsis\core_cmInstr.h" />
+		<Unit filename="inc\array_fn.h" />
 		<Unit filename="inc\stm32_uuid.h" />
 		<Unit filename="inc\stm32f0xx.h" />
 		<Unit filename="inc\stm32f0xx_conf.h" />
 		<Unit filename="inc\system_stm32f0xx.h" />
-		<Unit filename="readme.txt" />
+		<Unit filename="inc\uart.h" />
+		<Unit filename="src\array_fn.c">
+			<Option compilerVar="CC" />
+		</Unit>
 		<Unit filename="src\main.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="src\startup_stm32f0xx.S">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src\stm32_uuid.c">
+		<Unit filename="src\system_stm32f0xx.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src\system_stm32f0xx.c">
+		<Unit filename="src\uart.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="stm32f030f4_flash.ld" />
@@ -190,7 +196,15 @@
 		<Extensions>
 			<code_completion />
 			<debugger>
-				<target_debugging_settings target="Debug" active_interface="ST-link">
+				<target_debugging_settings target="Debug" active_interface="J-link">
+					<debug_interface interface_id="J-link" ip_address="localhost" ip_port="2331" path="%Software\SEGGER\J-Link:InstallPath%" executable="JLinkGDBServer.exe" description="" dont_start_server="true" backoff_time="2000" options="0" reg_filter="0" active_family="Generic">
+						<family_options family_id="Generic">
+							<option opt_id="ID_CMD_BEFORE" opt_value="" />
+							<option opt_id="ID_GDB_SERVER_CL" opt_value="-select USB -device STM32F030F4 -if SWD -speed 1000 -noir" />
+							<option opt_id="ID_CMD_RESET" opt_value="monitor reset&#x0A;&#x0A;" />
+							<option opt_id="ID_CMD_AFTER" opt_value="monitor flash download = 1&#x0A;monitor flash breakpoints = 1&#x0A;&#x0A;load&#x0A;monitor reset&#x0A;break main&#x0A;continue" />
+						</family_options>
+					</debug_interface>
 					<debug_interface interface_id="ST-link" ip_address="localhost" ip_port="4242" path="${EMBLOCKS}\share\contrib" executable="STLinkGDB.exe" description="..\..\eagle\occupancy-detector\code\STM32F030.svd" dont_start_server="false" backoff_time="1000" options="2" reg_filter="0" active_family="STMicroelectronics">
 						<family_options family_id="STMicroelectronics">
 							<option opt_id="ID_JTAG_SWD" opt_value="swd" />
@@ -208,7 +222,7 @@
 					</debug_interface>
 				</target_debugging_settings>
 				<target_debugging_settings target="Release" active_interface="ST-link">
-					<debug_interface interface_id="ST-link" ip_address="localhost" ip_port="4242" path="${EMBLOCKS}\share\contrib" executable="STLinkGDB.exe" description="" dont_start_server="false" backoff_time="1000" options="0" reg_filter="0" active_family="STMicroelectronics">
+					<debug_interface interface_id="ST-link" ip_address="localhost" ip_port="4242" path="${EMBLOCKS}\share\contrib" executable="STLinkGDB.exe" description="" dont_start_server="true" backoff_time="1000" options="0" reg_filter="0" active_family="STMicroelectronics">
 						<family_options family_id="STMicroelectronics">
 							<option opt_id="ID_JTAG_SWD" opt_value="swd" />
 							<option opt_id="ID_VECTOR_START" opt_value="0x08000000" />

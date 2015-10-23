@@ -404,7 +404,7 @@
 1443904159 c:\users\leaf\documents\eagle\dcc_block_detector\code\spl\inc\stm32f0xx_adc.h
 	"stm32f0xx.h"
 
-1443904159 c:\users\leaf\documents\eagle\dcc_block_detector\code\inc\stm32f0xx.h
+1445632260 c:\users\leaf\documents\eagle\dcc_block_detector\code\inc\stm32f0xx.h
 	"core_cm0.h"
 	"system_stm32f0xx.h"
 	<stdint.h>
@@ -582,12 +582,28 @@
 	"stm32f0xx_wwdg.h"
 	"stm32f0xx_rcc.h"
 
-1444324217 source:c:\users\leaf\documents\eagle\dcc_block_detector\code\src\main.c
+1445638565 source:c:\users\leaf\documents\eagle\dcc_block_detector\code\src\main.c
 	"stm32f0xx_conf.h"
-	"stm32_uuid.h"
+	<stdint.h>
+	<stdbool.h>
+	"uart.h"
+	"array_fn.h"
 
 1443904159 source:c:\users\leaf\documents\eagle\dcc_block_detector\code\src\startup_stm32f0xx.s
 
-1443904159 source:c:\users\leaf\documents\eagle\dcc_block_detector\code\src\system_stm32f0xx.c
+1445632317 source:c:\users\leaf\documents\eagle\dcc_block_detector\code\src\system_stm32f0xx.c
 	"stm32f0xx.h"
+
+1445638299 source:c:\users\leaf\documents\eagle\dcc_block_detector\code\src\array_fn.c
+	"array_fn.h"
+
+1445638213 c:\users\leaf\documents\eagle\dcc_block_detector\code\inc\array_fn.h
+	<stdint.h>
+
+1445638083 source:c:\users\leaf\documents\eagle\dcc_block_detector\code\src\uart.c
+	"stm32f0xx_conf.h"
+	"uart.h"
+
+1445638092 c:\users\leaf\documents\eagle\dcc_block_detector\code\inc\uart.h
+	<stdint.h>
 

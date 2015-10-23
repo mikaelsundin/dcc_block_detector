@@ -33,7 +33,7 @@
 	</File>
 	<File name="SPL\inc\stm32f0xx_rcc.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="16364" topLine="378" />
+			<Cursor1 position="26173" topLine="567" />
 		</Cursor>
 	</File>
 	<File name="SPL\inc\stm32f0xx_syscfg.h" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -43,7 +43,7 @@
 	</File>
 	<File name="SPL\inc\stm32f0xx_usart.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="15492" topLine="387" />
+			<Cursor1 position="21241" topLine="493" />
 		</Cursor>
 	</File>
 	<File name="SPL\src\stm32f0xx_adc.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -58,17 +58,22 @@
 	</File>
 	<File name="SPL\src\stm32f0xx_exti.c" open="0" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="2" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="6913" topLine="131" />
+			<Cursor1 position="10177" topLine="237" />
 		</Cursor>
 	</File>
 	<File name="SPL\src\stm32f0xx_rcc.c" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="53700" topLine="1343" />
+			<Cursor1 position="45716" topLine="1152" />
 		</Cursor>
 	</File>
 	<File name="SPL\src\stm32f0xx_usart.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="37102" topLine="897" />
+			<Cursor1 position="12098" topLine="262" />
+		</Cursor>
+	</File>
+	<File name="inc\array_fn.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="215" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="inc\stm32_uuid.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -78,32 +83,47 @@
 	</File>
 	<File name="inc\stm32f0xx.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="23700" topLine="342" />
+			<Cursor1 position="300897" topLine="3708" />
 		</Cursor>
 	</File>
 	<File name="inc\stm32f0xx_conf.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1983" topLine="18" />
+			<Cursor1 position="2759" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="inc\system_stm32f0xx.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1975" topLine="63" />
+		</Cursor>
+	</File>
+	<File name="inc\uart.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="57" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src\array_fn.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="639" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="src\main.c" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="4" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="507" topLine="0" />
+			<Cursor1 position="998" topLine="25" />
 		</Cursor>
 	</File>
-	<File name="src\startup_stm32f0xx.S" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\startup_stm32f0xx.S" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="7651" topLine="166" />
+			<Cursor1 position="6141" topLine="98" />
 		</Cursor>
 	</File>
-	<File name="src\stm32_uuid.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\system_stm32f0xx.c" open="0" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="384" topLine="0" />
+			<Cursor1 position="11724" topLine="303" />
 		</Cursor>
 	</File>
-	<File name="src\system_stm32f0xx.c" open="0" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\uart.c" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="12494" topLine="303" />
+			<Cursor1 position="29" topLine="0" />
 		</Cursor>
 	</File>
 </EmBlocks_layout_file>

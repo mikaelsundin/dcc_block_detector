@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="50" unitdist="mil" unit="mil" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="no" active="no"/>
@@ -15463,6 +15463,8 @@ https://github.com/mikaelsundin
 
 (C) 2015 Mikael Sundin</text>
 <text x="104.14" y="88.9" size="2.54" layer="97">Mount U2 for half-duplex uart</text>
+<text x="337.82" y="45.72" size="1.778" layer="97">ALT: LP2950-33LPE3
+TO92 mount as SMD</text>
 </plain>
 <instances>
 <instance part="U$1" gate="A" x="177.8" y="185.42"/>
